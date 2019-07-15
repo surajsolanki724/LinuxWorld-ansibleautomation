@@ -1,0 +1,53 @@
+- hosts: nn
+  tasks:
+      # - command:  "rpm -ivh /root/Desktop/jdk-8u171-linux-x64.rpm"
+       - copy: "src=/root/Desktop/pycode/java.py dest=/root/java.py"
+       - command: "python36 /root/java.py"
+       
+       - copy:  "src=/root/Desktop/pycode/hadoop/bashrc.py dest=/root/.bashrc" 
+       
+       - command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --force"
+       - copy: "src=/root/Desktop/pycode/hadoop/corefile.py  dest=/etc/hadoop/core-site.xml"
+       - copy: "src=/root/Desktop/pycode/hadoop/mapredfile.py  dest=/etc/hadoop/mapred-site.xml"
+       - command: "hadoop-daemon.sh start namenode"
+       - command: "mkdir /mydrive"
+
+- hosts: client
+  tasks:
+       #- command: "rpm -ivh /root/Desktop/jdk-8u171-linux-x64.rpm"
+       - copy: "src=/root/Desktop/pycode/java.py dest=/root/java.py"
+       - command: "python36 /root/java.py"
+       - copy:  "src=/root/Desktop/pycode/hadoop/bashrc.py dest=/root/.bashrc"
+
+       - command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --force"
+       - copy: "src=/root/Desktop/pycode/hadoop/corefile.py  dest=/etc/hadoop/core-site.xml"
+       - copy: "src=/root/Desktop/pycode/hadoop/mapredfile.py   dest=/etc/hadoop/mapred-site.xml"
+      
+- hosts: job
+  tasks:
+       #- command: "rpm -ivh /root/Desktop/jdk-8u171-linux-x64.rpm"
+       - copy: "src=/root/Desktop/pycode/java.py dest=/root/java.py"
+       - command: "python36 /root/java.py"
+       - copy:  "src=/root/Desktop/pycode/hadoop/bashrc.py dest=/root/.bashrc"
+
+       - command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --force"
+       - copy: "src=/root/Desktop/pycode/hadoop/corefile.py  dest=/etc/hadoop/core-site.xml"
+       - copy: "src=/root/Desktop/pycode/hadoop/mapredfile.py  dest=/etc/hadoop/mapred-site.xml"
+       - command: "hadoop-daemon.sh start tasknode"
+
+- hosts: dn
+  tasks:
+       #- command: "rpm -ivh /root/Desktop/jdk-8u171-linux-x64.rpm"
+       - copy: "src=/root/Desktop/pycode/java.py dest=/root/java.py"
+       - command: "python36 /root/java.py"
+       - copy:  "src=/root/Desktop/pycode/hadoop/bashrc.py dest=/root/.bashrc"
+
+       - command: "rpm -ivh /root/hadoop-1.2.1-1.x86_64.rpm --force"
+       - copy:  "src=/root/Desktop/pycode/hadoop/corefile.py  dest=/etc/hadoop/core-site.xml"
+       - copy:  "src=/root/Desktop/pycode/hadoop/datahdfs.py  dest=/etc/hadoop/hdfs-site.xml"
+       - copy:  "src=/root/Desktop/pycode/hadoop/mapredfile.py  dest=/etc/hadoop/mapred-site.xml"
+       - command: "hadoop-daemon.sh start datanode"
+       - command: "hadoop-daemon.sh start tasknode"
+       - command: "mkdir /mydata"
+
+ 
